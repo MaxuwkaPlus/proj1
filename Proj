@@ -1,0 +1,236 @@
+function Menu
+fprintf(' \n');
+flag=0;
+Menu1=1;
+while Menu1~='4'
+clc;
+fprintf('Данная программа реализует решение СЛАУ методом Гаусса\n');
+fprintf(' \n');
+fprintf('Меню:\n');
+fprintf('1. Демонстрация работы программы \n');
+fprintf('2. Решение Системы Линейных Алгебраических Уравнений  \n');
+fprintf('3. Графическое представление \n');
+fprintf('4. Информация о программе и авторе\n');
+fprintf('5. Выход \n');
+Menu1 = input('Введите пункт меню:','s');
+switch Menu1
+case '1'
+Demonstration;
+case '2'
+[a,b,d,z]=Work;
+flag=1;
+case '3'
+if flag==0  
+[a,b,d,z]=second_menu;
+end
+Graf(d);
+clc;
+fprintf('\n');
+fprintf('Матрица коэффициентов СЛАУ\n');
+fprintf('\n');
+disp(a);
+fprintf('\n');
+fprintf('Вектор-столбец свободных членов\n');
+fprintf('\n');
+disp(b);
+fprintf('\n');
+fprintf('\n');
+result(d,z);
+fprintf('Для возврата в главное меню нажмите любую клавишу \n');
+pause;
+case '4'
+information;
+case '5'
+ clc;
+clear;
+disp('Программа завершена');
+break;
+otherwise
+disp ('Ошибка, нажмите любую клавишу и повторите ввод');
+pause;
+clc;
+end;
+end
+end
+ 
+ 
+ 
+ 
+Функция Demonstration:
+ 
+function Demonstration
+clc;
+a=[5 3 2 0;2.5 -6 8 2;3 0.5 -5 3;2 1 0 -5.4 ];
+b=[2;4;-2;1.5];
+c=det(a);
+d=a\b;
+z=2;
+fprintf('Матрица коэффициентов СЛАУ\n');
+fprintf('\n');
+fprintf(' %1.2f  %1.2f  %1.2f  %1.2f  \n', a');
+fprintf('\n');
+fprintf('Вектор свободных членов\n');
+fprintf('\n');
+fprintf(' %1.1f  %1.1f  %1.1f  %1.1f  \n', b);
+fprintf('\n');
+fprintf('\n');
+result(d,z);
+Graf(d);
+fprintf('Для возврата в главное меню нажмите любую клавишу');
+pause;
+clc;close;clear;
+end
+ 
+Функция Work:
+function [a,b,d,z]=Work(Menu1)
+clear;
+clc;
+while 1
+a=input('Введите квадратную матрицу коэффициентов СЛАУ a = ','s');
+a=str2num(a);
+b=input('Введите вектор-столбец свободных членов b = ','s');
+b=str2num(b);
+if (length(a)==0)  
+disp('Ошибка!!!Введенные данные должны являться числовыми');
+fprintf('Повторите ввод\n');
+elseif (length(b)==0)
+disp('Ошибка!!!Введенные данные должны являться числовыми');
+elseif size(a,1)~=size(a,2)
+disp('Ошибка!!!Матрица должны быть квадратной');
+fprintf('Повторите ввод\n');
+elseif det(a)==0
+disp('Ошибка!!!Определительно матрицы не должен быть равен нулю');
+fprintf('Повторите ввод\n');
+elseif size(a,1)~=size(b,1)
+disp('Ошибка!!!Количество элементов вектора свободных членов должно быть равно количеству строк матрицы коэффициентов СЛАУ')
+fprintf('Повторите ввод\n');
+else break;
+end
+end
+d=a\b;
+a1=a*2;
+z=check_number('Введите точность решения:  ');
+fprintf('\n');
+fprintf('Матрица коэффициентов СЛАУ\n');
+fprintf('\n');
+disp(a);
+fprintf('\n');
+fprintf('Вектор-столбец свободных членов\n');
+fprintf('\n');
+disp(b);
+fprintf('\n');
+fprintf('\n');
+result(d,z);
+fprintf('Для возврата в главное меню нажмите любую клавишу \n');
+pause;
+end
+ 
+Функция Graf:
+function Graf(d)
+title('Графическое представление решения СЛАУ');
+hold on
+grid on
+plot(d,'g','LineWidth',1.5);
+plot(d,'dr','LineWidth',5);
+title('Решение системы линейных алгебраических уравнений');
+xlabel x
+ylabel y
+hold off
+grid on
+end
+ 
+Функция result:
+function result(d,z)
+v=z+2;
+disp('Вектор решений')
+fprintf('|------------------------------|\n');
+fprintf('|  Неизвестные  |   Результат  |\n');
+fprintf('|---------------|--------------|\n');
+for i=1:length(d);
+fprintf('|       d       |       %*.*f  |\n',v,z,d(i));
+end
+fprintf('|------------------------------|\n');
+fprintf('\n');
+end
+ 
+Функция information:
+function information
+clc;
+fprintf(' СЛАУ-Система Линейных Алгебраических Уравнений.\n В данной программе реализовано нахождение решений системы линейных алгебраических уравнений методом Гаусса.\n Обработка данных производится методом Гаусса с помощью встроенной функции MATLAB (функция "\\").\n\n Автор:Максим Мезенцев \n Группа №3715 \n Дата последней редакции 03.06.2018\n СПБГУАП\n Санкт-Петербург\n 2018 год\n');
+user_menu=1;
+while user_menu
+fprintf(' \n');
+fprintf('Выберите пункт меню: \n');
+fprintf('1. Вернуться в главное меню \n');
+fprintf('2. Завершить выполнение программы \n');
+user_menu = input('Введите пункт меню:','s');
+switch user_menu
+case '1'
+Menu;
+break;
+case '2'
+clc;
+clear all;
+close all;
+disp('Программа завершена');
+ 
+break
+otherwise
+disp ('ошибка!!!Повторите ввод');
+pause;
+clc;
+end
+end
+end
+ 
+Функция check_number:
+function x = check_number(fBody)
+while 1
+buffer = input(fBody,'s');
+x = str2double( buffer );
+% функция str2double
+% преобразуетстрокувчисло (скаляр) типа double.
+% Если строка содержит не число, то результатом
+% преобразования будет Nan. При преобразовании
+% символ ',' просто опускается.
+if isnan(x)
+disp('')
+disp('Ошибка!!!');
+disp('Введенное данное содержит символы или пробел!');
+disp('Повторите ввод');
+%проверяем целое ли число
+elseif mod(x,1)~=0
+disp('');
+disp('Ошибка!!!');
+disp('Введенное данное не является целым числом!');
+disp('Повторитеввод');
+else
+break
+end
+end
+ 
+Функция second_menu:
+function x = check_number(fBody)
+while 1
+buffer = input(fBody,'s');
+x = str2double( buffer );
+% функция str2double
+% преобразуетстрокувчисло (скаляр) типа double.
+% Если строка содержит не число, то результатом
+% преобразования будет Nan. При преобразовании
+% символ ',' просто опускается.
+if isnan(x)
+disp('')
+disp('Ошибка!!!');
+disp('Введенное данное содержит символы или пробел!');
+disp('Повторите ввод');
+%проверяем целое ли число
+elseif mod(x,1)~=0
+disp('');
+disp('Ошибка!!!');
+disp('Введенное данное не является целым числом!');
+disp('Повторитеввод');
+else
+break
+end
+end
